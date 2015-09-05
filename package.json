@@ -1,0 +1,22 @@
+{
+  "name": "case-studies-cli",
+  "version": "0.0.1",
+  "description": "Partner Catalyst - Case Study CLI",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "./case-study.js",
+  "author": "Jason Poon",
+  "license": "ISC",
+  "preferGlobal": true,
+  "dependencies": {
+    "colors": "^1.1.2",
+    "git-config": "0.0.7",
+    "inquirer": "^0.9.0",
+    "moment": "^2.10.6"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.2"
+  }
+}
