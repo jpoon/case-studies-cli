@@ -13,7 +13,7 @@ var menu = [
         name: "action",
         message: "What do you want to do?",
         choices: [
-            { name: "New Case Study", value: "case-study" },
+            { name: "Create New Case Study", value: "case-study" },
         ],
     },
 ];
