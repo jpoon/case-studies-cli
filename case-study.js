@@ -1,107 +1,40 @@
 #!/usr/bin/env node
 
-var inquirer = require("inquirer");
-var moment = require("moment");
-var path = require("path");
-var gitConfig = require("git-config");
-var FileHelper = require('./lib/file-helper');
-var colors = require('./lib/cli-color');
+var inquirer = require("inquirer"),
+    moment = require("moment"),
+    path = require("path"),
+    colors = require('./lib/cli-color'),
+    FileHelper = require('./lib/file-helper'),
+    Menu = require('./lib/menu');
 
-var menu = [
-    {
-        type: "list",
-        name: "action",
-        message: "What do you want to do?",
-        choices: [
-            { name: "Create New Case Study", value: "case-study" },
-        ],
-    },
-];
+var FindPath = function(name, isFile) {
+    var filePath = FileHelper.find(name, isFile);
+    if (!filePath) {
+        console.log(colors.warn("Unable to find the '" + name + "'"));
+    }
 
-var caseStudyMenu = [
-  {
-      type: "input",
-      name: "title",
-      message: "Title",
-      validate: function (val) {
-          return !(val === null || val.length === 0);
-      },
-  },
-  {
-      type: "input",
-      name: "author",
-      message: "Author",
-      default: function () {
-          var done = this.async();
-          gitConfig(function (err, config) {
-              var author;
-              if (!err) author = config.user.name;
-              done(author);
-          });
-      },
-  },
-  {
-      type: "input",
-      name: "authorLink",
-      message: "Author Link",
-      default: "n/a",
-  },
-  {
-      type: "input",
-      name: "date",
-      message: "Date",
-      default: function () { return moment().format("YYYY-MM-DD hh:mm:ss"); },
-  },
-  {
-      type: "input",
-      name: "categories",
-      message: "Categories",
-      validate: function (val) {
-          return !(val === null || val.length === 0);
-      },
-  },
-  {
-      type: "list",
-      name: "color",
-      message: "Color",
-      choices: [
-          { name: "blue" },
-      ]
-  },
-  {
-      type: "input",
-      name: "excerpt",
-      message: "Excerpt/Description",
-      validate: function (val) {
-          return !(val === null || val.length === 0);
-      },
-  },
-];
-
+    return filePath;
+};
 
 console.log('\n----------------------------------'.silly);
 console.log(' Partner Catalyst. Case Study CLI.');
 console.log('----------------------------------\n'.silly);
 
-inquirer.prompt(menu, function (resp) {
+
+inquirer.prompt(Menu.mainMenu, function (resp) {
     switch (resp.action) {
         case "case-study":
-            var postsDir = FileHelper.find('_posts', false);
-            if (!postsDir) {
-                console.log("\nUnable to find the '_posts' directory.".error);
-                console.log("Are you executing the cli in the case-studies folder?".error);
+            var postsDir = FindPath('_posts', false);
+            var postTemplateFile = FindPath('post-template.md');
+            var imagesParentDir = FindPath('images', false);
+
+            if (!postsDir || !postTemplateFile || !imagesParentDir) {
+                console.log(colors.error("Are you executing the cli in the case-studies folder?"));
                 return;
             }
             
-            var postTemplateFile = FileHelper.find('post-template.md');
-            if (!postTemplateFile) {
-                console.log("\nUnable to find the 'post-template.md' file.".error);
-                console.log("Are you executing the cli in the case-studies folder?".error);
-                return;
-            }
-            
-            inquirer.prompt(caseStudyMenu, function (caseStudy) {
-                var postTitle = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-') + '.md';
+            inquirer.prompt(Menu.subMenuCaseStudy, function (caseStudy) {
+                var postName = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-');
 
                 var newHeader =
                 [
@@ -117,11 +50,20 @@ inquirer.prompt(menu, function (resp) {
                     '---'
                 ].join('\n');
 
-                var postContent = FileHelper.read(postTemplateFile);
-                var postPath = path.join(postsDir, postTitle);
-                FileHelper.write(postPath, postContent.replace(/---([\s\S]*)---/gmi, newHeader));
+                console.log("\nCreating...");
 
-                console.log("\nCreated " + postPath.green);
+                // create images folder
+                var imageFolder = path.join(imagesParentDir, postName);
+                FileHelper.createDirectory(imageFolder);
+                console.log(colors.verbose("  Image Folder: ") + imageFolder);
+
+                // create post
+                var postContent = FileHelper.read(postTemplateFile);
+                var postPath = path.join(postsDir, postName + ".md");
+                FileHelper.write(postPath, postContent.replace(/---([\s\S]*)---/gmi, newHeader));
+                console.log(colors.verbose("  Post: ") + colors.italic(postPath));
+
+                console.log(colors.info("Done"));
             });
             break;
 
