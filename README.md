@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/case-studies-cli.svg)](https://www.npmjs.com/package/case-studies-cli)
 
-A CLI tool for creating [case studies](https://github.com/CatalystCode/case-studies) for [Microsoft Partner Catalyst Blog](http://catalystcode.github.io/case-studies).
+A CLI tool for [Microsoft Partner Catalyst Blog](http://catalystcode.github.io/case-studies).
 
 ## Install
 
