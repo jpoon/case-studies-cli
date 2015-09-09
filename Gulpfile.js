@@ -4,6 +4,10 @@ var gulp = require('gulp'),
     jshint = require("gulp-jshint"),
     tag_version = require('gulp-tag-version');
 
+var paths = {
+    scripts: ['*.js', 'lib/*.js'],
+};
+
 function inc(importance) {
     return gulp.src(['./package.json'])
         .pipe(bump({type: importance}))
@@ -12,16 +16,18 @@ function inc(importance) {
         .pipe(tag_version());
 }
 
-gulp.task('patch', function() { return inc('patch'); })
-gulp.task('feature', function() { return inc('minor'); })
-gulp.task('release', function() { return inc('major'); })
+gulp.task('patch', function () { return inc('patch'); });
+gulp.task('feature', function() { return inc('minor'); });
+gulp.task('release', function() { return inc('major'); });
 
 gulp.task("lint", function () {
-    gulp.src("src/*.js")
+    gulp.src(paths.scripts)
         .pipe(jshint())
         .pipe(jshint.reporter("default"));
 });
 
 gulp.task('watch', function () {
-    gulp.watch("src/*.js", ["lint"]);
+    gulp.watch(paths.scripts, ["lint"]);
 });
+
+gulp.task('default', ['watch']);
