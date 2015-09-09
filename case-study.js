@@ -101,7 +101,7 @@ inquirer.prompt(menu, function (resp) {
             }
             
             inquirer.prompt(caseStudyMenu, function (caseStudy) {
-                var postTitle = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-').toLowerCase() + '.md';
+                var postTitle = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-') + '.md';
 
                 var newHeader =
                 [
