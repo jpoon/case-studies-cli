@@ -44,7 +44,7 @@ inquirer.prompt(Menu.mainMenu, function (resp) {
                     'author: ' + caseStudy.author,
                     'author-link: ' + caseStudy.authorLink,
                     'date: ' + caseStudy.date,
-                    'categories: ' + caseStudy.categories,
+                    'tags: ' + caseStudy.tags,
                     'color: ' + caseStudy.color,
                     'excerpt: ' + caseStudy.excerpt,
                     '---'
