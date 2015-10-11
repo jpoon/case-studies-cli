@@ -10,9 +10,11 @@
   "license": "ISC",
   "preferGlobal": true,
   "dependencies": {
+    "bluebird": "^2.10.2",
     "colors": "^1.1.2",
     "git-config": "0.0.7",
     "inquirer": "^0.9.0",
+    "lodash": "^3.10.1",
     "moment": "^2.10.6"
   },
   "devDependencies": {

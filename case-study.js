@@ -5,70 +5,92 @@ var inquirer = require("inquirer"),
     path = require("path"),
     colors = require('./lib/cli-color'),
     FileHelper = require('./lib/file-helper'),
+    Package = require('./lib/package'),
     Menu = require('./lib/menu');
 
-var FindPath = function(name, isFile) {
+var FindPath = function(name, isFile, log) {
+    log = typeof log !== 'undefined' ? log : true ;
     var filePath = FileHelper.find(name, isFile);
-    if (!filePath) {
+    if (!filePath && log) {
         console.log(colors.warn("Unable to find the '" + name + "'"));
     }
 
     return filePath;
 };
 
+var current = Package.GetCurrentVersion();
 console.log('\n----------------------------------'.silly);
 console.log(' Partner Catalyst. Case Study CLI.');
+console.log(' v' + current);
 console.log('----------------------------------\n'.silly);
 
-
-inquirer.prompt(Menu.mainMenu, function (resp) {
-    switch (resp.action) {
-        case "case-study":
-            var postsDir = FindPath('_posts', false);
-            var postTemplateFile = FindPath('post-template.md');
-            var imagesParentDir = FindPath('images', false);
-
-            if (!postsDir || !postTemplateFile || !imagesParentDir) {
-                console.log(colors.error("Are you executing the cli in the case-studies folder?"));
-                return;
-            }
-            
-            inquirer.prompt(Menu.subMenuCaseStudy, function (caseStudy) {
-                var postName = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-');
-
-                var newHeader =
-                [
-                    '---',
-                    'layout: post',
-                    'title: ' + caseStudy.title,
-                    'author: ' + caseStudy.author,
-                    'author-link: ' + caseStudy.authorLink,
-                    'date: ' + caseStudy.date,
-                    'tags: ' + caseStudy.tags,
-                    'color: ' + caseStudy.color,
-                    'excerpt: ' + caseStudy.excerpt,
-                    '---'
-                ].join('\n');
-
-                console.log("\nCreating...");
-
-                // create images folder
-                var imageFolder = path.join(imagesParentDir, postName);
-                FileHelper.createDirectory(imageFolder);
-                console.log(colors.verbose("  Image Folder: ") + imageFolder);
-
-                // create post
-                var postContent = FileHelper.read(postTemplateFile);
-                var postPath = path.join(postsDir, postName + ".md");
-                FileHelper.write(postPath, postContent.replace(/---([\s\S]*)---/gmi, newHeader));
-                console.log(colors.verbose("  Post: ") + colors.italic(postPath));
-
-                console.log(colors.info("Done"));
-            });
-            break;
-
-        default:
-            console.log("Unsupported method.".error);
-            break;
+Package.GetLatestVersion().then(function(latest) {
+    if (latest && latest != current) {
+        console.log(colors.warn("Warning: Running outdated CLI (latest: " + latest + ")"));
+        console.log(colors.warn("Update using: 'npm install -g case-studies-cli'.\n"));
     }
+}).finally(function() {
+    inquirer.prompt(Menu.mainMenu, function (resp) {
+        switch (resp.action) {
+            case "case-study":
+                var postsDir = FindPath('_posts', false);
+                var postTemplateFile = FindPath('post-template.md');
+                var imagesParentDir = FindPath('images', false);
+
+                if (!postsDir || !postTemplateFile || !imagesParentDir) {
+                    console.log(colors.error("Are you executing the cli in the case-studies folder?"));
+                    return;
+                }
+                
+                inquirer.prompt(Menu.subMenuCaseStudy, function (caseStudy) {
+                    var postName = moment(caseStudy.date).format("YYYY-MM-DD") + '-' + caseStudy.title.replace(/ +/g, '-');
+
+                    var newHeader =
+                    [
+                        '---',
+                        'layout: post',
+                        'title: ' + caseStudy.title,
+                        'author: ' + caseStudy.author,
+                        'author-link: ' + caseStudy.authorLink,
+                        'author-image: ' + caseStudy.authorImage,
+                        'image: ' + caseStudy.image,
+                        'date: ' + caseStudy.date,
+                        'tags: ' + caseStudy.tags,
+                        'color: ' + caseStudy.color,
+                        'excerpt: ' + caseStudy.excerpt,
+                        'coderesources: ' + caseStudy.codeResources,
+                        '---'
+                    ].join('\n');
+
+                    console.log("\nValidating...");
+
+                    // author image 
+                    var authorImageFileName = caseStudy.authorImage.split("/").pop(); 
+                    var authorImageFile = FindPath(authorImageFileName, true, false);
+                    if (!authorImageFile) {
+                        console.log(colors.warn("  Author image not found. Please upload an image to " + caseStudy.authorImage));
+                    }
+
+                    console.log("Creating...");
+
+                    // create images folder
+                    var imageFolder = path.join(imagesParentDir, postName);
+                    FileHelper.createDirectory(imageFolder);
+                    console.log(colors.verbose("  Image Folder: ") + imageFolder);
+
+                    // create post
+                    var postContent = FileHelper.read(postTemplateFile);
+                    var postPath = path.join(postsDir, postName + ".md");
+                    FileHelper.write(postPath, postContent.replace(/---([\s\S]*)---/gmi, newHeader));
+                    console.log(colors.verbose("  Post: ") + colors.italic(postPath));
+
+                    console.log(colors.info("Done"));
+                });
+                break;
+
+            default:
+                console.log("Unsupported method.".error);
+                break;
+        }
+    });
 });
