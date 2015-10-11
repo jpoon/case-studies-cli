@@ -7,7 +7,7 @@
   },
   "bin": "./case-study.js",
   "author": "Jason Poon",
-  "license": "ISC",
+  "license": "MIT",
   "preferGlobal": true,
   "dependencies": {
     "bluebird": "^2.10.2",
