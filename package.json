@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin": "./case-study.js",
+  "bin": "./bin/case-study.js",
   "author": "Jason Poon",
   "license": "MIT",
   "preferGlobal": true,
@@ -13,14 +13,14 @@
     "bluebird": "^2.10.2",
     "colors": "^1.1.2",
     "git-config": "0.0.7",
-    "inquirer": "^0.9.0",
+    "inquirer": "^0.10.1",
     "lodash": "^3.10.1",
     "moment": "^2.10.6"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-bump": "^0.3.1",
-    "gulp-git": "^1.4.0",
+    "gulp-bump": "^1.0.0",
+    "gulp-git": "^1.5.0",
     "gulp-jshint": "^1.11.2",
     "gulp-tag-version": "^1.3.0"
   }

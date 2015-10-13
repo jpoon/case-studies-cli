@@ -3,10 +3,10 @@
 var inquirer = require("inquirer"),
     moment = require("moment"),
     path = require("path"),
-    colors = require('./lib/cli-color'),
-    FileHelper = require('./lib/file-helper'),
-    Package = require('./lib/package'),
-    Menu = require('./lib/menu');
+    colors = require('./../lib/cli-color'),
+    FileHelper = require('./../lib/file-helper'),
+    Package = require('./../lib/package'),
+    Menu = require('./../lib/menu');
 
 var FindPath = function(name, isFile, log) {
     log = typeof log !== 'undefined' ? log : true ;

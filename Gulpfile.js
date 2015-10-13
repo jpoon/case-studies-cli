@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     tag_version = require('gulp-tag-version');
 
 var paths = {
-    scripts: ['*.js', 'lib/*.js'],
+    scripts: ['*.js', 'lib/*.js', 'bin/*.js'],
 };
 
 function inc(importance) {
