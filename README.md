@@ -18,4 +18,4 @@ npm install -g case-studies-cli
 
 In your local `case-studies` folder, run: `case-studies-cli`. 
 
-![screenshot](https://github.com/jpoon/case-study-cli/blob/master/img/screenshot.png)
+![screenshot](https://github.com/jpoon/case-study-cli/blob/master/img/screenshot.gif)
