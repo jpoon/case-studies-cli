@@ -59,7 +59,8 @@ Package.GetLatestVersion().then(function(latest) {
                         'color: ' + caseStudy.color,
                         'excerpt: ' + caseStudy.excerpt,
                         'coderesources: ' + caseStudy.codeResources,
-                        '---'
+                        '---',
+                        '\n'
                     ].join('\n');
 
                     console.log("\nValidating...");
@@ -68,7 +69,16 @@ Package.GetLatestVersion().then(function(latest) {
                     var authorImageFileName = caseStudy.authorImage.split("/").pop(); 
                     var authorImageFile = FindPath(authorImageFileName, true, false);
                     if (!authorImageFile) {
-                        console.log(colors.warn("  Author image not found. Please upload an image to " + caseStudy.authorImage));
+                        console.log(colors.warn("  Author image not found. Save an image to " + caseStudy.authorImage));
+
+                        newHeader += 
+                        [
+                            '<!--',
+                            '   To Do ',
+                            '   * Save author image to ' + caseStudy.authorImage,
+                            '-->',
+                            '\n'
+                        ].join('\n');
                     }
 
                     console.log("Creating...");
@@ -76,11 +86,26 @@ Package.GetLatestVersion().then(function(latest) {
                     // create images folder
                     var imageFolder = path.join(imagesParentDir, postName);
                     FileHelper.createDirectory(imageFolder);
+
+                    var imagePath = imageFolder.split(path.sep);
+
+                    newHeader +=
+                    [
+                        '<!--',
+                        '   Images',
+                        '   * upload images to ' + imageFolder,
+                        '     and reference them in the markdown like so:',
+                        '           ![Picture]({{site.baseurl}}/' + imagePath.splice(-2).join('/') + '/example-picture.png',
+                        '-->',
+                        '\n'
+                    ].join('\n');
+
                     console.log(colors.verbose("  Image Folder: ") + imageFolder);
 
                     // create post
                     var postContent = FileHelper.read(postTemplateFile);
                     var postPath = path.join(postsDir, postName + ".md");
+
                     FileHelper.write(postPath, postContent.replace(/---([\s\S]*)---/gmi, newHeader));
                     console.log(colors.verbose("  Post: ") + colors.italic(postPath));
 
