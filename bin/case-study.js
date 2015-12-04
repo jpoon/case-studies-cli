@@ -95,7 +95,7 @@ Package.GetLatestVersion().then(function(latest) {
                         '   Images',
                         '   * upload images to ' + imageFolder,
                         '     and reference them in the markdown like so:',
-                        '           ![Picture]({{site.baseurl}}/' + imagePath.splice(-2).join('/') + '/example-picture.png',
+                        '           ![Picture]({{site.baseurl}}/' + imagePath.splice(-2).join('/') + '/example-picture.png)',
                         '-->',
                         '\n'
                     ].join('\n');
