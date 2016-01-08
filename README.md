@@ -1,10 +1,10 @@
-# case-studies-cli
-
 [![npm version](https://badge.fury.io/js/case-studies-cli.svg)](https://www.npmjs.com/package/case-studies-cli)
 [![Dependency Status](https://david-dm.org/jpoon/case-studies-cli.svg)](https://david-dm.org/jpoon/case-studies-cli)
 [![devDependency Status](https://david-dm.org/jpoon/case-studies-cli/dev-status.svg)](https://david-dm.org/jpoon/case-studies-cli#info=devDependencies)
 
-A CLI tool for [Microsoft Partner Catalyst Blog](http://catalystcode.github.io/case-studies).
+# case-studies-cli
+
+A CLI tool to help create new case studies for the [Microsoft Partner Catalyst Blog](http://aka.ms/case-studies).
 
 ## Install
 
@@ -18,4 +18,8 @@ npm install -g case-studies-cli
 
 In your local `case-studies` folder, run: `case-studies-cli`. 
 
-![screenshot](img/screenshot.gif)
+![screenshot](https://raw.githubusercontent.com/jpoon/case-studies-cli/master/img/screenshot.gif)
+
+## License
+
+Copyright (C) 2015 Jason Poon and Microsoft Corporation, licensed as MIT.
