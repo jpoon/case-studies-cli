@@ -56,7 +56,7 @@ Package.GetLatestVersion().then(function(latest) {
                         'image: ' + caseStudy.image,
                         'date: ' + caseStudy.date,
                         'tags: ' + caseStudy.tags,
-                        'color: ' + caseStudy.color,
+                        'color: blue',
                         'excerpt: ' + caseStudy.excerpt,
                         'coderesources: ' + caseStudy.codeResources,
                         '---',
