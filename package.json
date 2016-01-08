@@ -1,6 +1,6 @@
 {
   "name": "case-studies-cli",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Partner Catalyst - Case Study CLI",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
