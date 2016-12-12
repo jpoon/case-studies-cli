@@ -1,6 +1,6 @@
 {
   "name": "case-studies-cli",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Partner Catalyst - Case Study CLI",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,12 +10,12 @@
   "license": "MIT",
   "preferGlobal": true,
   "dependencies": {
-    "bluebird": "^3.1.1",
+    "bluebird": "^3.4.6",
     "colors": "^1.1.2",
     "git-config": "0.0.7",
-    "inquirer": "^0.11.1",
+    "inquirer": "^0.11.4",
     "lodash": "^3.10.1",
-    "moment": "^2.10.6"
+    "moment": "^2.17.1"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
